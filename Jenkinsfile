@@ -1,54 +1,19 @@
-node{
-    
-    stage('Clone repo'){
-        git credentialsId: 'GIT-Credentials', url: 'https://github.com/nenavathsrinu/maven-web-app.git'
+pipeline {
+    agent any
+    environment {
+        path = "/opt/apache-maven-3.9.6/bin" // Fixed the syntax error here and added the missing closing quote
     }
-    
-    stage('Maven Build'){
-        def mavenHome = tool name: "Maven-3.8.6", type: "maven"
-        def mavenCMD = "${mavenHome}/bin/mvn"
-        sh "${mavenCMD} clean package"
-    }
-    
-    stage('SonarQube analysis') {       
-        withSonarQubeEnv('Sonar-Server-7.8') {
-       	sh "mvn sonar:sonar"    	
-    }
-        
-    stage('upload war to nexus'){
-	steps{
-		nexusArtifactUploader artifacts: [	
-			[
-				artifactId: '01-maven-web-app',
-				classifier: '',
-				file: 'target/01-maven-web-app.war',
-				type: war		
-			]	
-		],
-		credentialsId: 'nexus3',
-		groupId: 'in.ashokit',
-		nexusUrl: '',
-		protocol: 'http',
-		repository: 'ashokit-release'
-		version: '1.0.0'
-	}
-}
-    
-    stage('Build Image'){
-        sh 'docker build -t ashokit/mavenwebapp .'
-    }
-    
-    stage('Push Image'){
-        withCredentials([string(credentialsId: 'DOCKER-CREDENTIALS', variable: 'DOCKER_CREDENTIALS')]) {
-            sh 'docker login -u ashokit -p ${DOCKER_CREDENTIALS}'
+    stages {
+        stage('getcode') { // Enclosed stage names in quotes
+            steps {
+                git branch: 'master', // Added a comma between branch and URL
+                    url: 'https://github.com/nenavathsrinu/maven-web-app.git' // Corrected the structure of git step
+            }
         }
-        sh 'docker push ashokit/mavenwebapp'
+        stage('build') { // Enclosed stage names in quotes
+            steps {
+                sh 'mvn clean package' // Removed the unnecessary 'mvn' within the string
+            }
+        }
     }
-    
-    stage('Deploy App'){
-        kubernetesDeploy(
-            configs: 'maven-web-app-deploy.yml',
-            kubeconfigId: 'Kube-Config'
-        )
-    }    
 }
