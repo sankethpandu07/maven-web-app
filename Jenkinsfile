@@ -12,7 +12,7 @@ pipeline {
         }
         stage('build') { // Enclosed stage names in quotes
             steps {
-                sh 'mvn clean package' // Removed the unnecessary 'mvn' within the string
+                bat 'mvn clean package' // Removed the unnecessary 'mvn' within the string
             }
         }
     }
