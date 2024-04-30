@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        path = "/opt/apache-maven-3.9.6/bin" // Fixed the syntax error here and added the missing closing quote
+        PATH = "$PATH:C:/Program Files/maven/apache-maven-3.9.6/bin" // Fixed the syntax error here and added the missing closing quote
     }
     stages {
         stage('getcode') { // Enclosed stage names in quotes
