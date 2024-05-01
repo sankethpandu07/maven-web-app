@@ -1,12 +1,12 @@
 <html>
 <body>
-<h1><font color='red'> Welcome to Ashok IT - Software Training Institute <font></h1>
+<h1><font color='red'> Welcome to Nenavath Srinu IT - Software Training Institute <font></h1>
 
-<a href="https://ashokitech.com/online-training-schedules">Click Here To See Ashok IT Training Schedules</a>
+<a href="www.linkedin.com/in/srinu-nenavath-97970991">Click hear to see the profile</a>
   
-  <h2> Call Us : + 91 - 99 85 39 66 77 / 99 85 29 66 77</h2>
+  <h2> Call Us : + 91 - 95 05 58 39 18 / 88 86 04 44 56</h2>
   
-  <h3> Ofc Location : Ameerpet, Hyderbad </h3>
+  <h3> Ofc Location : Ameerpet, DilSukhNagar Hyderabad </h3>
   
   <h1> Learn Here.. Lead Anywhere..!! </h1>
 
