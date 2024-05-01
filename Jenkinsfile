@@ -1,18 +1,43 @@
 pipeline {
     agent any
-    environment {
-        PATH = "$PATH:C:/Program Files/maven/apache-maven-3.9.6/bin" // Fixed the syntax error here and added the missing closing quote
-    }
+    
     stages {
-        stage('getcode') { // Enclosed stage names in quotes
+        stage('GetCode') {
             steps {
-                git branch: 'master', // Added a comma between branch and URL
-                    url: 'https://github.com/nenavathsrinu/maven-web-app.git' // Corrected the structure of git step
+                // Fetch code from the GitHub repository
+                git url: 'https://github.com/nenavathsrinu/maven-web-app.git'
             }
         }
-        stage('build') { // Enclosed stage names in quotes
+        
+        stage('Git Pull') {
             steps {
-                bat 'mvn clean package' // Removed the unnecessary 'mvn' within the string
+                // Pull code from the Git repository
+                git branch: 'master', credentialsId: 'your_git_credentials', url: 'https://github.com/nenavathsrinu/maven-web-app.git'
+            }
+        }
+        
+        stage('Build') {
+            steps {
+                // Build your project (e.g., Maven or Gradle)
+                bat 'mvn clean package'
+            }
+        }
+        
+        stage('SonarQube Analysis') {
+            steps {
+                // Run SonarQube analysis
+                withSonarQubeEnv('sonar-9') {
+                    bat 'mvn sonar:sonar'
+                }
+            }
+        }
+        
+        stage('Deploy to Tomcat') {
+            steps {
+                // Deploy the WAR file to Tomcat
+                deploy adapters: [tomcat9(credentialsId: 'tomcat-123', url: 'http://192.168.0.170:8080/')],
+                       contextPath: '/opt/apache-tomcat-9.0.88/webapps',
+                       war: 'target/maven-web-app.war'  // Use forward slashes for file paths
             }
         }
     }
