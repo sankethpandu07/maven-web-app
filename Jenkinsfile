@@ -35,7 +35,7 @@ pipeline {
         stage('Deploy to Tomcat') {
             steps {
                 // Deploy the WAR file to Tomcat
-                deploy adapters: [tomcat9(credentialsId: 'tomcat-123', url: 'http://192.168.0.170:8080/')],
+                deploy adapters: [tomcat9(credentialsId: 'tomcat', url: 'http://192.168.0.112:8080/')],
                        contextPath: '/opt/apache-tomcat-9.0.88/webapps',
                        war: 'target/maven-web-app.war'  // Use forward slashes for file paths
             }
