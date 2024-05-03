@@ -1,24 +1,22 @@
 pipeline {
     agent any
     
+    environment {
+        // Adjusted Maven path to include the bin directory
+        PATH = "${PATH};C:/Program Files/maven/apache-maven-3.9.6/bin"
+    }
+    
     stages {
         stage('GetCode') {
             steps {
                 // Fetch code from the GitHub repository
-                git url: 'https://github.com/sankethpandu07/maven-web-app'
-            }
-        }
-        
-        stage('Git Pull') {
-            steps {
-                // Pull code from the Git repository
-                git branch: 'master', credentialsId: 'your_git_credentials', url: 'https://github.com/sankethpandu07/maven-web-app'
+                git url: 'https://github.com/nenavathsrinu/maven-web-app.git'
             }
         }
         
         stage('Build') {
             steps {
-                // Build your project (e.g., Maven or Gradle)
+                // Use Maven to clean and package the code
                 bat 'mvn clean package'
             }
         }
@@ -27,7 +25,7 @@ pipeline {
             steps {
                 // Run SonarQube analysis
                 withSonarQubeEnv('sonar-9') {
-                    bat 'mvn sonar:sonar'
+                    bat "mvn sonar:sonar"
                 }
             }
         }
